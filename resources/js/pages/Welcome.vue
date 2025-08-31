@@ -55,12 +55,21 @@ async function fetchDiff() {
     const res = await fetch('/api/diff');
     const data = await res.json();
 
-    console.log(data);
-
     if (res.status === 200) {
-        diff.value = JSON.stringify(data, null, 2);
+        diff.value = data;
     } else {
         payload1Error.value = data.error;
+    }
+}
+
+function getDiffClass(diff: string) {
+    switch (diff) {
+        case 'changed':
+            return 'bg-yellow-300';
+        case 'added':
+            return 'bg-green-300';
+        case 'removed':
+            return 'bg-red-300';
     }
 }
 </script>
@@ -79,6 +88,65 @@ async function fetchDiff() {
                 Send Payload 1
             </button>
         </div>
-        <div class="grid"></div>
+        <div class="flex justify-center gap-6 pt-12">
+            <div>Legend:</div>
+            <div class="flex gap-2">
+                <div class="h-6 w-12 bg-green-300" />
+                <div>Added</div>
+            </div>
+            <div class="flex gap-2">
+                <div class="h-6 w-12 bg-red-300" />
+                <div>Removed</div>
+            </div>
+            <div class="flex gap-2">
+                <div class="h-6 w-12 bg-yellow-300" />
+                <div>Changed</div>
+            </div>
+        </div>
+        <div class="p-12">
+            <div class="grid grid-cols-3" v-if="diff">
+                <div class="col-span-3 p-2 pt-12 text-2xl font-bold">Metadata</div>
+                <div class="col-span-3 border-t" />
+                <div class="p-2">Title</div>
+                <div class="p-2" :class="getDiffClass(diff.title)">{{ payload1.title }}</div>
+                <div class="p-2" :class="getDiffClass(diff.title)">{{ payload2.title }}</div>
+
+                <div class="p-2">Description</div>
+                <div class="p-2" :class="getDiffClass(diff.description)">
+                    {{ payload1.description }}
+                </div>
+                <div class="p-2" :class="getDiffClass(diff.description)">
+                    {{ payload2.description }}
+                </div>
+
+                <div class="col-span-3 p-2 pt-12 text-2xl font-bold">Images</div>
+                <div v-for="image in diff.images" class="contents" :key="image.id">
+                    <div class="col-span-3 border-t" />
+                    <div v-for="key in Object.keys(image)" :key="key" class="contents">
+                        <div class="p-2">{{ key }}</div>
+                        <div class="p-2" :class="getDiffClass(image[key])">
+                            {{ payload1.images.find((i) => i.id === image.id)?.[key] }}
+                        </div>
+                        <div class="p-2" :class="getDiffClass(image[key])">
+                            {{ payload2.images.find((i) => i.id === image.id)?.[key] }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-3 p-2 pt-12 text-2xl font-bold">Variants</div>
+                <div v-for="variant in diff.variants" class="contents" :key="variant.id">
+                    <div class="col-span-3 border-t" />
+                    <div v-for="key in Object.keys(variant)" :key="key" class="contents">
+                        <div class="p-2">{{ key }}</div>
+                        <div class="p-2" :class="getDiffClass(variant[key])">
+                            {{ payload1.variants.find((i) => i.id === variant.id)?.[key] }}
+                        </div>
+                        <div class="p-2" :class="getDiffClass(variant[key])">
+                            {{ payload2.variants.find((i) => i.id === variant.id)?.[key] }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
