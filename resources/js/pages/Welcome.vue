@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { payload1 } from '@/lib/payloads';
+import { payload1, payload2 } from '@/lib/payloads';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -12,12 +12,13 @@ const payload2Error = ref<string | null>(null);
 const diff = ref<any | null>(null);
 
 async function handleSend() {
-    sendPayload1();
-    setTimeout(sendPayload2, 30000);
+    await sendPayload1();
+    await sendPayload2();
+    await fetchDiff();
 }
 
 async function sendPayload1() {
-    const res = await fetch('/diff', {
+    const res = await fetch('/api/diff', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload1),
@@ -33,10 +34,10 @@ async function sendPayload1() {
 }
 
 async function sendPayload2() {
-    const res = await fetch('/diff', {
+    const res = await fetch('/api/diff', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload1),
+        body: JSON.stringify(payload2),
     });
 
     const data = await res.json();
@@ -51,11 +52,13 @@ async function sendPayload2() {
 }
 
 async function fetchDiff() {
-    const res = await fetch('/diff');
+    const res = await fetch('/api/diff');
     const data = await res.json();
 
+    console.log(data);
+
     if (res.status === 200) {
-        diff.value = data;
+        diff.value = JSON.stringify(data, null, 2);
     } else {
         payload1Error.value = data.error;
     }
@@ -76,5 +79,6 @@ async function fetchDiff() {
                 Send Payload 1
             </button>
         </div>
+        <div class="grid"></div>
     </div>
 </template>
