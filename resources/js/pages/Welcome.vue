@@ -1,20 +1,29 @@
-<script setup lang="ts">
+<script setup>
+import Button from '@/components/Button.vue';
 import { payload1, payload2 } from '@/lib/payloads';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
-const payload1Status = ref<string | null>(null);
-const payload1Error = ref<string | null>(null);
+const secondsBetweenPayloads = 1;
+const error = ref(null);
+const diff = ref(null);
+const loading = ref(false);
 
-const payload2Status = ref<string | null>(null);
-const payload2Error = ref<string | null>(null);
-
-const diff = ref<any | null>(null);
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
 
 async function handleSend() {
-    await sendPayload1();
-    await sendPayload2();
-    await fetchDiff();
+    loading.value = true;
+    try {
+        await sendPayload1();
+        await sleep(secondsBetweenPayloads * 1000);
+
+        await sendPayload2();
+        await fetchDiff();
+    } finally {
+        loading.value = false;
+    }
 }
 
 async function sendPayload1() {
@@ -26,10 +35,9 @@ async function sendPayload1() {
 
     const data = await res.json();
 
-    if (res.status === 200) {
-        payload1Status.value = 'success';
-    } else {
-        payload1Error.value = data.error;
+    if (res.status !== 200) {
+        error.value = data.message;
+        throw new Error();
     }
 }
 
@@ -42,13 +50,10 @@ async function sendPayload2() {
 
     const data = await res.json();
 
-    if (res.status === 200) {
-        payload2Status.value = 'success';
-    } else {
-        payload2Error.value = data.error;
+    if (res.status !== 200) {
+        error.value = data.message;
+        throw new Error();
     }
-
-    setTimeout(fetchDiff, 1000);
 }
 
 async function fetchDiff() {
@@ -58,11 +63,12 @@ async function fetchDiff() {
     if (res.status === 200) {
         diff.value = data;
     } else {
-        payload1Error.value = data.error;
+        error.value = data.message;
+        throw new Error();
     }
 }
 
-function getDiffClass(diff: string) {
+function getDiffClass(diff) {
     switch (diff) {
         case 'changed':
             return 'bg-yellow-300';
@@ -71,6 +77,14 @@ function getDiffClass(diff: string) {
         case 'removed':
             return 'bg-red-300';
     }
+}
+
+function getImage(payload, id) {
+    return payload.images.find((i) => i.id === id);
+}
+
+function getVariant(payload, id) {
+    return payload.variants.find((i) => i.id === id);
 }
 </script>
 
@@ -81,12 +95,12 @@ function getDiffClass(diff: string) {
     </Head>
     <div class="flex flex-col pt-12">
         <div class="flex justify-center">
-            <button
-                class="cursor-pointer rounded bg-blue-700 px-4 py-2 text-white"
-                @click="handleSend"
-            >
-                Send Payload 1
-            </button>
+            <div class="flex flex-col items-center gap-4">
+                <Button @click="handleSend" :disabled="loading">
+                    {{ loading ? 'loading...' : 'Send Payload 1' }}
+                </Button>
+                <div v-if="error" class="text-red-700">{{ error }}</div>
+            </div>
         </div>
         <div class="flex justify-center gap-6 pt-12">
             <div>Legend:</div>
@@ -125,10 +139,10 @@ function getDiffClass(diff: string) {
                     <div v-for="key in Object.keys(image)" :key="key" class="contents">
                         <div class="p-2">{{ key }}</div>
                         <div class="p-2" :class="getDiffClass(image[key])">
-                            {{ payload1.images.find((i) => i.id === image.id)?.[key] }}
+                            {{ getImage(payload1, image.id)?.[key] }}
                         </div>
                         <div class="p-2" :class="getDiffClass(image[key])">
-                            {{ payload2.images.find((i) => i.id === image.id)?.[key] }}
+                            {{ getImage(payload2, image.id)?.[key] }}
                         </div>
                     </div>
                 </div>
@@ -139,10 +153,10 @@ function getDiffClass(diff: string) {
                     <div v-for="key in Object.keys(variant)" :key="key" class="contents">
                         <div class="p-2">{{ key }}</div>
                         <div class="p-2" :class="getDiffClass(variant[key])">
-                            {{ payload1.variants.find((i) => i.id === variant.id)?.[key] }}
+                            {{ getVariant(payload1, variant.id)?.[key] }}
                         </div>
                         <div class="p-2" :class="getDiffClass(variant[key])">
-                            {{ payload2.variants.find((i) => i.id === variant.id)?.[key] }}
+                            {{ getVariant(payload2, variant.id)?.[key] }}
                         </div>
                     </div>
                 </div>

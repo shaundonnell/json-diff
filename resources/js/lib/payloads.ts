@@ -1,4 +1,26 @@
-export const payload1 = {
+export type PayloadImage = {
+    id: number;
+    position: number;
+    url: string;
+};
+
+export type PayloadVariant = {
+    id: number;
+    sku: string;
+    barcode: string;
+    image_id: number;
+    inventory_quantity: number;
+};
+
+export type Payload = {
+    id: number;
+    title: string;
+    description: string;
+    images: PayloadImage[];
+    variants: PayloadVariant[];
+};
+
+export const payload1: Payload = {
     id: 432232523,
     title: 'Syncio T-Shirt',
     description:
@@ -62,7 +84,7 @@ export const payload1 = {
     ],
 };
 
-export const payload2 = {
+export const payload2: Payload = {
     id: 432232523,
     title: 'Syncio T-Shirt',
     description:
