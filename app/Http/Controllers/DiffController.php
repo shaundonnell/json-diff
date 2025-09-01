@@ -27,20 +27,28 @@ class DiffController extends Controller
         $diff['description'] = $this->compare($payload1, $payload2, 'description');
 
         // Check the images and variants for changes by ID
-        $diff['images'] = $this->compareArraysById($payload1['images'], $payload2['images']);
-        $diff['variants'] = $this->compareArraysById($payload1['variants'], $payload2['variants']);
+        if (isset($payload1['images']) && isset($payload2['images'])) {
+            $diff['images'] = $this->compareArraysById($payload1['images'], $payload2['images']);
+        }
+        if (isset($payload1['variants']) && isset($payload2['variants'])) {
+            $diff['variants'] = $this->compareArraysById($payload1['variants'], $payload2['variants']);
+        }
 
         return response()->json($diff);
     }
 
     public function compareArraysById($arr1, $arr2)
     {
+        $diff = [];
+
+        if (!is_array($arr1) || !is_array($arr2)) {
+            return $diff;
+        }
+
         // get all the unique IDs for the objects in both arrays
         $arr1Ids = array_column($arr1, 'id');
         $arr2Ids = array_column($arr2, 'id');
         $uniqueIds = array_unique(array_merge($arr1Ids, $arr2Ids));
-
-        $diff = [];
 
         foreach ($uniqueIds as $id) {
             $arr1Item = array_find($arr1, fn($i) => $i['id'] == $id);
