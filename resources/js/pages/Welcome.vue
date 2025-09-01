@@ -4,7 +4,7 @@ import { payload1, payload2 } from '@/lib/payloads';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
-const secondsBetweenPayloads = 1;
+const secondsBetweenPayloads = 30;
 const error = ref(null);
 const diff = ref(null);
 const loading = ref(false);
