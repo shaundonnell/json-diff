@@ -48,11 +48,12 @@ class DiffController extends Controller
         // get all the unique IDs for the objects in both arrays
         $arr1Ids = array_column($arr1, 'id');
         $arr2Ids = array_column($arr2, 'id');
+
         $uniqueIds = array_unique(array_merge($arr1Ids, $arr2Ids));
 
         foreach ($uniqueIds as $id) {
-            $arr1Item = array_find($arr1, fn($i) => $i['id'] == $id);
-            $arr2Item = array_find($arr2, fn($i) => $i['id'] == $id);
+            $arr1Item = array_find($arr1, fn($i) => isset($i['id']) && $i['id'] == $id);
+            $arr2Item = array_find($arr2, fn($i) => isset($i['id']) && $i['id'] == $id);
 
             $itemDiff = [];
 
