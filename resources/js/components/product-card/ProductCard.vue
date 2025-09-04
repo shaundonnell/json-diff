@@ -24,7 +24,7 @@ const descriptionClass =
 </script>
 
 <template>
-    <Card class="overflow-hidden p-0 pb-6">
+    <Card class="gap-0 overflow-hidden p-0 pb-6">
         <div class="flex items-center justify-center border-b p-2" :class="headerClass">
             {{ props.showChanges ? 'New version' : 'Old version' }}
         </div>
@@ -32,16 +32,16 @@ const descriptionClass =
             <div class="flex flex-col gap-6">
                 <div class="flex gap-4 px-6">
                     <SquareImage
-                        class="h-24 md:h-32 lg:h-48"
+                        class="mt-6 h-20 lg:h-32 xl:h-48"
                         :src="props.payload.images[0].url"
                         :alt="props.payload.title"
                     />
-                    <div>
-                        <h1 class="px-2 pb-4 text-2xl font-bold" :class="titleClass">
+                    <div class="mt-4 flex flex-col gap-2">
+                        <h1 class="rounded p-2 text-2xl font-bold" :class="titleClass">
                             {{ props.payload.title }}
                         </h1>
                         <div
-                            class="flex flex-col gap-4 rounded p-2 text-sm"
+                            class="flex max-h-96 flex-col gap-4 overflow-y-scroll rounded p-2 text-sm"
                             :class="descriptionClass"
                             v-html="props.payload.description"
                         />

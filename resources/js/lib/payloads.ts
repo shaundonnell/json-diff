@@ -29,27 +29,27 @@ export const payload1: Payload = {
         {
             id: 26372,
             position: 1,
-            url: 'https://cu.syncio.co/images/random_image_1.png',
+            url: 'https://picsum.photos/id/100/200/200',
         },
         {
             id: 23445,
             position: 2,
-            url: 'https://cu.syncio.co/images/random_image_2.png',
+            url: 'https://picsum.photos/id/201/200/200',
         },
         {
             id: 34566,
             position: 3,
-            url: 'https://cu.syncio.co/images/random_image_3.png',
+            url: 'https://picsum.photos/id/300/200/200',
         },
         {
             id: 33253,
             position: 4,
-            url: 'https://cu.syncio.co/images/random_image_4.png',
+            url: 'https://picsum.photos/id/401/200/200',
         },
         {
             id: 56353,
             position: 5,
-            url: 'https://cu.syncio.co/images/random_image_5.png',
+            url: 'https://picsum.photos/id/500/200/200',
         },
     ],
     variants: [
@@ -93,37 +93,37 @@ export const payload2: Payload = {
         {
             id: 26372,
             position: 1,
-            url: 'https://cu.syncio.co/images/random_image_1.png',
+            url: 'https://picsum.photos/id/100/200/200',
         },
         {
             id: 33245,
             position: 2,
-            url: 'https://cu.syncio.co/images/random_image_2.png',
+            url: 'https://picsum.photos/id/200/200/200',
         },
         {
             id: 56353,
             position: 3,
-            url: 'https://cu.syncio.co/images/random_image_5.png',
+            url: 'https://picsum.photos/id/300/200/200',
         },
         {
             id: 33213,
             position: 4,
-            url: 'https://cu.syncio.co/images/random_image_4.png',
+            url: 'https://picsum.photos/id/400/200/200',
         },
         {
             id: 34546,
             position: 5,
-            url: 'https://cu.syncio.co/images/random_image_16.png',
+            url: 'https://picsum.photos/id/500/200/200',
         },
         {
             id: 34566,
             position: 3,
-            url: 'https://cu.syncio.co/images/random_image_7.png',
+            url: 'https://picsum.photos/id/600/200/200',
         },
     ],
     variants: [
         {
-            id: 433232,
+            id: 33232,
             sku: 'SKU-II-10',
             barcode: 'BAR_CODE_230',
             image_id: 34566,

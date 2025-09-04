@@ -20,16 +20,25 @@ function getDiffForVariant(id) {
     return props.diff?.variants.find((i) => i.id === id);
 }
 
-function getVariantClass(variant, key) {
+function getRowClass(variant) {
     const diff = getDiffForVariant(variant.id);
-    switch (diff[key]) {
+    switch (diff.sku) {
         case 'added':
-            return 'outline-2 outline-green-600';
+            return 'bg-green-100';
         case 'removed':
-            return 'outline-2 outline-red-600';
-        case 'changed':
-            return props.showChanges ? 'outline-2 outline-yellow-600' : '';
+            return 'bg-red-100';
     }
+    return '';
+}
+
+function getCellClass(variant, key) {
+    const diff = getDiffForVariant(variant.id);
+
+    if (diff[key] === 'changed' && props.showChanges) {
+        return 'outline-2 outline-yellow-600';
+    }
+
+    return '';
 }
 </script>
 
@@ -47,11 +56,15 @@ function getVariantClass(variant, key) {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                <TableRow v-for="variant in variants" :key="variant.id">
+                <TableRow
+                    v-for="variant in variants"
+                    :key="variant.id"
+                    :class="getRowClass(variant)"
+                >
                     <TableCell>
                         <span
                             class="rounded px-2 py-1 text-sm"
-                            :class="getVariantClass(variant, 'id')"
+                            :class="getCellClass(variant, 'id')"
                         >
                             {{ variant.id }}
                         </span></TableCell
@@ -59,7 +72,7 @@ function getVariantClass(variant, key) {
                     <TableCell>
                         <span
                             class="rounded px-2 py-1 text-sm"
-                            :class="getVariantClass(variant, 'sku')"
+                            :class="getCellClass(variant, 'sku')"
                         >
                             {{ variant.sku }}
                         </span>
@@ -67,7 +80,7 @@ function getVariantClass(variant, key) {
                     <TableCell>
                         <span
                             class="rounded px-2 py-1 text-sm"
-                            :class="getVariantClass(variant, 'barcode')"
+                            :class="getCellClass(variant, 'barcode')"
                         >
                             {{ variant.barcode }}
                         </span>
@@ -75,7 +88,7 @@ function getVariantClass(variant, key) {
                     <TableCell>
                         <span
                             class="rounded px-2 py-1 text-sm"
-                            :class="getVariantClass(variant, 'image_id')"
+                            :class="getCellClass(variant, 'image_id')"
                         >
                             {{ variant.image_id }}
                         </span>
@@ -83,7 +96,7 @@ function getVariantClass(variant, key) {
                     <TableCell>
                         <span
                             class="rounded px-2 py-1 text-sm"
-                            :class="getVariantClass(variant, 'inventory_quantity')"
+                            :class="getCellClass(variant, 'inventory_quantity')"
                         >
                             {{ variant.inventory_quantity }}
                         </span>

@@ -15,13 +15,16 @@ function getDiffForImage(id) {
 
 function getImageClass(image) {
     const diff = getDiffForImage(image.id);
+
+    if ((diff.url === 'changed' || diff.position === 'changed') && props.showChanges) {
+        return 'outline-3 outline-yellow-600';
+    }
+
     switch (diff.url) {
         case 'added':
-            return 'outline-2 outline-green-600';
+            return 'outline-3 outline-green-600';
         case 'removed':
-            return 'outline-2 outline-red-600';
-        case 'changed':
-            return props.showChanges ? 'outline-2 outline-yellow-600' : '';
+            return 'outline-3 outline-red-600';
     }
 }
 </script>
@@ -35,7 +38,7 @@ function getImageClass(image) {
                 :src="image.url"
                 :alt="props.payload.title"
                 :key="image.src"
-                class="h-16 border-2 border-white"
+                class="h-16 border-3 border-white"
                 :class="getImageClass(image)"
             />
         </div>

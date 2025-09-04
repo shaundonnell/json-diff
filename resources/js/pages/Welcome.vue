@@ -86,9 +86,11 @@ async function fetchDiff() {
                 <div v-if="error" class="text-red-700">{{ error }}</div>
             </div>
         </div>
-        <div class="flex flex-col gap-6 p-12 md:flex-row" v-if="diff">
+        <div class="flex flex-col-reverse gap-6 p-12 lg:flex-row" v-if="diff">
             <ProductCard :payload="payload1" :diff="diff" />
-            <ArrowRight class="mt-48 hidden size-8 shrink-0 md:block" />
+            <div class="flex items-center justify-center self-stretch">
+                <ArrowRight class="hidden size-8 shrink-0 lg:block" />
+            </div>
             <ProductCard :payload="payload2" :diff="diff" show-changes />
         </div>
     </div>
