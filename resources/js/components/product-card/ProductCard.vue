@@ -29,7 +29,7 @@ const descriptionClass =
             {{ props.showChanges ? 'New version' : 'Old version' }}
         </div>
         <CardContent class="p-0">
-            <div class="flex flex-col gap-6">
+            <div class="flex flex-col gap-5">
                 <div class="flex gap-4 px-6">
                     <SquareImage
                         class="mt-6 h-20 lg:h-32 xl:h-48"

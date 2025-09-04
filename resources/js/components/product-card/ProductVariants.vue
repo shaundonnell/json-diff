@@ -43,7 +43,7 @@ function getCellClass(variant, key) {
 </script>
 
 <template>
-    <div class="px-6">
+    <div class="px-6 pb-2">
         <h2 class="pb-2 text-lg font-semibold">Variants</h2>
         <Table class="min-w-96 shrink-0">
             <TableHeader>

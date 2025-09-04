@@ -30,7 +30,7 @@ function getImageClass(image) {
 </script>
 
 <template>
-    <div class="px-6">
+    <div class="px-6 pb-2">
         <h2 class="pb-2 text-lg font-semibold">Images</h2>
         <div class="flex flex-wrap gap-4 pt-4">
             <SquareImage

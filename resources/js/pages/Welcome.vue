@@ -6,7 +6,7 @@ import { Head } from '@inertiajs/vue3';
 import { ArrowRight, Loader2 } from 'lucide-vue-next';
 import { ref } from 'vue';
 
-const secondsBetweenPayloads = 0;
+const secondsBetweenPayloads = 1;
 const error = ref(null);
 const diff = ref(null);
 const loading = ref(false);
